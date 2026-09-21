@@ -104,6 +104,9 @@ sup{font-size:.6em}
 .tags-lg span{background:var(--white);border:1px solid var(--line);color:var(--ink);font-size:15px}
 .callout{display:flex;flex-direction:column;gap:6px;padding:20px 22px;border-radius:16px;background:var(--peach);border:1px dashed var(--clay);color:var(--body)}
 .callout strong{color:var(--ink)}
+.callout+.btn{margin-top:20px}
+.btn+.fine{margin-top:14px}
+.grid-3+.fine{margin-top:24px}
 .sub-h{margin-top:48px}
 .bridge{margin-top:28px;font-size:18px}
 
