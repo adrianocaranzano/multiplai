@@ -2,13 +2,42 @@
 
 Sito vetrina di MultiplAI: formazione e consulenza AI per persone e PMI.
 Una pagina sola, HTML/CSS/JS statici, nessun passaggio di build. Animazioni con
-[GSAP](https://gsap.com/) caricato da CDN, sobrie e disattivabili.
+[GSAP](https://gsap.com/), ospitato nel sito insieme ai font: nessuna richiesta a
+servizi esterni, quindi nessun dato di navigazione verso terzi e il sito funziona
+anche offline.
 
 ```
-index.html              tutta la pagina
-assets/css/style.css    stili (mobile first, breakpoint a 900px)
-assets/js/main.js       menu, modulo, mini-quiz, animazioni
+index.html                   tutta la pagina
+assets/css/style.css         stili (mobile first, breakpoint a 900px), palette "Matrix"
+assets/css/intro.css         stili dell'intro
+assets/js/matrix-rain.js     motore della pioggia di codice (Canvas 2D)
+assets/js/intro.js           regia dell'intro (timeline GSAP) e pioggia di sfondo dell'hero
+assets/js/main.js            menu, modulo, mini-quiz, animazioni della pagina
+assets/js/vendor/            GSAP e ScrollTrigger
+assets/fonts/                font ospitati (licenze in FONT-LICENSES.md)
+assets/img/og-image.png      anteprima social 1200×630
 ```
+
+## L'intro
+
+Alla prima visita della sessione parte una sequenza di circa 7 secondi: si aprono le
+palpebre, compare la scritta "Svegliati.", poi "Non sei più solo.", la pioggia di codice
+scrive il logo e uno scanner la spazza via rivelando la pagina. È una sequenza originale
+in stile cyberpunk, non una riproduzione di scene o personaggi del film.
+
+Quando non parte: con `prefers-reduced-motion`, ai link con ancora (`#contatti`), alle
+visite successive nella stessa sessione, senza JavaScript (dopo 4 s di sicurezza).
+Si salta con il pulsante "Salta", Esc, Invio, Spazio o un tocco dopo 1,5 s.
+
+| Parametro URL | Effetto |
+| --- | --- |
+| `?intro=1` | forza l'intro (il link "Rivedi l'intro" nel footer lo usa) |
+| `?intro=0` | la salta |
+| `?nodegrade=1` | disattiva la riduzione automatica della qualità (solo per i test) |
+
+Testi e tempi si cambiano in cima a `assets/js/intro.js` (`TEXT` e `TIMING`). La
+palette è nei token `:root` di `style.css`. La pioggia riduce da sola la qualità
+(niente strato di fondo e bagliore, poi risoluzione ridotta) se il dispositivo non regge i frame.
 
 ## Provarlo in locale
 
@@ -28,7 +57,6 @@ python3 -m http.server 8000
 | `index.html` | `[DATE E PREZZO]` dei workshop e i tre `[PREZZO]` dei formati aziendali |
 | `index.html` | citazioni e nomi delle testimonianze (`[CITAZIONE]`, `[NOME]`) |
 | `index.html` | pagina privacy e Impressum: oggi sono ancore vuote nel footer |
-| `index.html` | `og:image` (1200×630) per le anteprime sui social |
 | `assets/js/main.js` | `FORM_ENDPOINT`: finché è vuoto il modulo mostra il ringraziamento ma non invia nulla |
 
 ## Il modulo
@@ -57,6 +85,7 @@ inserito prima di `</head>`.
 
 ## Accessibilità e prestazioni
 
-Testo leggibile anche senza JavaScript, contrasti conformi a WCAG AA, aree
-cliccabili da 44 px, `prefers-reduced-motion` rispettato. Se la CDN di GSAP non
-risponde, la pagina resta completa e statica.
+Testo leggibile anche senza JavaScript, aree cliccabili da 44 px,
+`prefers-reduced-motion` rispettato. L'intro è un dialogo con testo alternativo per gli
+screen reader e il resto della pagina è `inert` mentre è attivo. Se GSAP o il motore
+della pioggia non si caricano, l'intro viene saltata e la pagina resta completa.

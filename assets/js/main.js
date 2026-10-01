@@ -119,7 +119,10 @@
   }
   if (reduce) { showAll(); return; }
 
-  window.addEventListener('load', function () {
+  var started = false;
+  function startAnimations() {
+    if (started) return;
+    started = true;
     if (!window.gsap) { showAll(); return; }          // CDN non raggiungibile: nessuna animazione, contenuto visibile
     var gsap = window.gsap;
     if (window.ScrollTrigger) gsap.registerPlugin(window.ScrollTrigger);
@@ -133,7 +136,11 @@
     });
     tl.to('.spokes line', { strokeDashoffset: 0, duration: .7, stagger: .06 }, '-=.25')
       .from('.nodes circle', { scale: .6, opacity: 0, transformOrigin: '50% 50%', duration: .45, stagger: .06 }, '-=.5')
-      .from('.node-labels text', { opacity: 0, duration: .3, stagger: .06 }, '-=.35');
+      .from('.node-labels text', { opacity: 0, duration: .3, stagger: .06 }, '-=.35')
+      .add(function () {                               // raggi tratteggiati con flusso continuo
+        $$('.spokes line').forEach(function (l) { l.style.strokeDasharray = '4 6'; l.style.strokeDashoffset = 0; });
+        gsap.to('.spokes line', { strokeDashoffset: -20, duration: 1.2, ease: 'none', repeat: -1 });
+      });
 
     // sezioni: comparsa breve, una volta sola
     var rest = $$('[data-anim=up]').filter(function (el) { return !el.closest('.hero-text'); });
@@ -148,5 +155,21 @@
     } else {
       showAll();
     }
-  });
+    if (window.ScrollTrigger) window.ScrollTrigger.refresh();
+  }
+
+  /* L'animazione dell'hero parte quando l'intro inizia a lasciare la scena
+     (evento "intro:reveal"). Senza intro parte al caricamento, come prima. */
+  var html = document.documentElement;
+  if (html.classList.contains('intro-on')) {
+    document.addEventListener('intro:reveal', startAnimations);
+    // rete di sicurezza: se l'intro viene tolta in altro modo, il sito non resta nascosto
+    new MutationObserver(function () {
+      if (!html.classList.contains('intro-on')) startAnimations();
+    }).observe(html, { attributes: true, attributeFilter: ['class'] });
+  } else if (document.readyState === 'complete') {
+    startAnimations();
+  } else {
+    window.addEventListener('load', startAnimations);
+  }
 })();
