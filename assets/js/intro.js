@@ -21,8 +21,7 @@
 
   var TEXT = {
     wake: 'Svegliati.',
-    alone: 'Non sei più solo.',
-    status: 'sistema pronto',
+    alone: 'Non sei più solo.',   // last thing read before the hero, which answers "why" (see hero H1)
     wordmark: [['Multipl', false], ['AI', true]]
   };
 
@@ -31,15 +30,16 @@
     open: 1.0,         // eyes open for real
     type: 1.75,        // "Svegliati." starts typing
     typeDur: 0.8,
-    hold1: 0.35,
-    scramble: 0.5,     // line one decodes into line two
-    hold2: 0.55,
+    hold1: 0.45,
     glitch: 0.2,
-    reveal: 1.3,       // the rain writes the wordmark
-    crisp: 0.45,
-    hold3: 0.3,
-    wipe: 0.85
+    reveal: 1.0,       // the rain writes the wordmark
+    crisp: 0.35,
+    decode: 0.6,       // "Non sei più solo." decodes under the wordmark
+    hold2: 0.45,       // read it, then straight into the hero
+    lead: 0.15,        // hero starts rising this long before the wipe
+    wipe: 0.65
   };
+
 
   /* ------------------------------------------------------------------ */
   /* ambient rain behind the hero (also used when the intro is skipped)  */
@@ -202,7 +202,7 @@
       setLids();
 
       var T = TIMING, t;
-      tl = gsap.timeline({ onComplete: function () { exit(T.wipe); } });
+      tl = gsap.timeline();
       window.__intro.tl = tl;
 
       // 1. first flutter: light leaks through, then the lids drop again
@@ -220,14 +220,12 @@
         .to(rain, { speed: 0.75, duration: 1.2, ease: 'sine.inOut' }, T.open)
         .set(lids, { display: 'none' }, T.open + 1.35);
 
-      // 3. terminal: line one types, decodes into line two, then glitches out
+      // 3. terminal: "Svegliati." types, holds, then glitches out
       t = T.type;
       tl.set(termWrap, { opacity: 1 }, t - 0.3)
         .to(rain, { dim: 0.5, duration: 0.6, ease: 'sine.inOut' }, t - 0.2)
         .add(typeTo(term, TEXT.wake, T.typeDur), t);
       t += T.typeDur + T.hold1;
-      tl.add(decode(term, TEXT.alone, T.scramble), t);
-      t += T.scramble + T.hold2;
       tl.to(rain, { glitch: 1, duration: 0.08 }, t)
         .to(termWrap, { opacity: 0, duration: 0.12, ease: 'power1.in' }, t + 0.04)
         .to(rain, { glitch: 0, duration: 0.2 }, t + T.glitch)
@@ -241,12 +239,15 @@
       tl.call(function () { phase = 2; }, null, C)
         .to(cvCrisp, { opacity: 1, duration: T.crisp, ease: 'power2.out' }, C)
         .fromTo(cvCrisp, { filter: 'brightness(2.4)' }, { filter: 'brightness(1)', duration: T.crisp + 0.2, ease: 'power2.out' }, C)
-        .to(rain, { heldAlpha: 0.25, speed: 0.9, duration: T.crisp }, C)
-        .to(status, { opacity: 1, duration: 0.2 }, C + 0.1)
-        .add(typeTo(statusText, TEXT.status, 0.45), C + 0.1);
+        .to(rain, { heldAlpha: 0.25, speed: 0.9, duration: T.crisp }, C);
 
-      // 5. hold, then exit() wipes it away (called from onComplete)
-      tl.to({}, { duration: T.hold3 }, C + T.crisp + 0.35);
+      // 5. second line under the wordmark, then straight into the hero
+      var D = C + T.crisp * 0.6;
+      tl.to(status, { opacity: 1, duration: 0.15 }, D)
+        .add(decode(statusText, TEXT.alone, T.decode), D);
+      var X = D + T.decode + T.hold2;
+      tl.call(function () { document.dispatchEvent(new CustomEvent('intro:reveal')); }, null, X - T.lead)
+        .call(function () { exit(T.wipe); }, null, X);
     }
 
     /* ---- exit: scanner line wipes the overlay away, site appears ---- */

@@ -20,10 +20,15 @@ assets/img/og-image.png      anteprima social 1200×630
 
 ## L'intro
 
-Alla prima visita della sessione parte una sequenza di circa 7 secondi: si aprono le
-palpebre, compare la scritta "Svegliati.", poi "Non sei più solo.", la pioggia di codice
-scrive il logo e uno scanner la spazza via rivelando la pagina. È una sequenza originale
-in stile cyberpunk, non una riproduzione di scene o personaggi del film.
+Alla prima visita della sessione parte una sequenza di circa 6 secondi: si aprono le
+palpebre, compare "Svegliati.", la pioggia di codice scrive il logo, sotto il logo
+si decifra "Non sei più solo." e subito dopo uno scanner spazza via l'intro. L'hero
+risponde al perché: "Hai un team AI." È una sequenza originale in stile cyberpunk,
+non una riproduzione di scene o personaggi del film.
+
+**Pillole.** La pillola rossa è il percorso "Per te" (workshop), la blu "Per la tua
+azienda": stesso codice colore nei pulsanti dell'hero, nelle due schede "Da dove parti?"
+e nei pulsanti di sezione. I pulsanti generici ("Parliamone", "Invia richiesta") restano verdi.
 
 Quando non parte: con `prefers-reduced-motion`, ai link con ancora (`#contatti`), alle
 visite successive nella stessa sessione, senza JavaScript (dopo 4 s di sicurezza).

@@ -41,11 +41,11 @@ html.intro-on,html.intro-on body{overflow:hidden}
 
 .intro-status{
   position:absolute;left:0;right:0;margin:0;padding:0 24px;text-align:center;opacity:0;
-  font:500 clamp(13px,1.6vw,19px)/1.3 'JetBrains Mono',ui-monospace,Menlo,Consolas,monospace;
-  letter-spacing:.16em;text-transform:uppercase;color:#7dff9a;
-  text-shadow:0 0 10px rgba(0,255,65,.65);
+  font:500 clamp(19px,2.8vw,36px)/1.3 'JetBrains Mono','RainGlyphs',ui-monospace,Menlo,Consolas,monospace;
+  letter-spacing:.01em;color:#b9ffca;
+  text-shadow:0 0 12px rgba(0,255,65,.8),0 0 34px rgba(0,255,65,.4),0 2px 2px #000;
 }
-.intro-status .intro-cursor{width:.5em;height:.95em}
+.intro-status .intro-cursor{width:.5em;height:.95em;margin-left:.12em}
 
 /* eyelids: black everywhere except an elliptical aperture that opens */
 .intro-lids{

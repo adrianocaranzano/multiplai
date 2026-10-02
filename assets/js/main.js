@@ -129,7 +129,7 @@
 
     // hero: testo che sale, raggi che si disegnano, nodi che compaiono
     var tl = gsap.timeline({ defaults: { ease: 'power2.out' } });
-    tl.to('.hero-text [data-anim]', { opacity: 1, y: 0, duration: .55, stagger: .08, startAt: { y: 18 } });
+    tl.to('.hero-text [data-anim]', { opacity: 1, y: 0, duration: .45, stagger: .06, startAt: { y: 16 } });
     $$('.spokes line').forEach(function (l) {
       var len = l.getTotalLength ? l.getTotalLength() : 200;
       gsap.set(l, { opacity: 1, strokeDasharray: len, strokeDashoffset: len });
