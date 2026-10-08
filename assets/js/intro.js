@@ -19,6 +19,8 @@
   var $ = function (id) { return document.getElementById(id); };
   var debounce = function (fn, ms) { var t; return function () { clearTimeout(t); t = setTimeout(fn, ms); }; };
 
+  /* wordmark typeface: same face as the site logo (Martian Mono Bold, OFL) */
+  function WORD_FONT(px) { return '700 ' + px + "px 'Martian Mono', ui-monospace, Menlo, Consolas, monospace"; }
   var TEXT = {
     wake: 'Svegliati.',
     alone: 'Non sei più solo.',   // last thing read before the hero, which answers "why" (see hero H1)
@@ -98,7 +100,7 @@
       var w = innerWidth, h = innerHeight, stacked = w < 640;
       var m = document.createElement('canvas').getContext('2d');
       var base = 100;
-      m.font = '800 ' + base + 'px Syne, sans-serif';
+      m.font = WORD_FONT(base);
       var rows = stacked ? [[TEXT.wordmark[0]], [TEXT.wordmark[1]]] : [TEXT.wordmark];
       var widest = 0, i, j, p, wsum;
       var meas = rows.map(function (parts) {
@@ -124,7 +126,7 @@
     }
 
     function drawSegs(g, accentOnly, fillFor) {
-      g.font = '800 ' + lay.fs + 'px Syne, sans-serif';
+      g.font = WORD_FONT(lay.fs);
       g.textAlign = 'left'; g.textBaseline = 'alphabetic'; g.lineJoin = 'round';
       lay.lines.forEach(function (line) {
         line.forEach(function (s) {
@@ -305,8 +307,8 @@
     var fonts = document.fonts
       ? Promise.all([
           API.ready(),
-          document.fonts.load('800 100px Syne', 'MultiplAI'),
-          document.fonts.load("500 20px 'JetBrains Mono'", 'Svegliati.')
+          document.fonts.load(WORD_FONT(100), 'MultiplAI'),
+          document.fonts.load("500 20px 'Martian Mono'", 'Svegliati.')
         ]).catch(function () {})
       : Promise.resolve();
     Promise.race([fonts, new Promise(function (r) { setTimeout(r, 1800); })]).then(build);

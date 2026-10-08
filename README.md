@@ -94,3 +94,5 @@ Testo leggibile anche senza JavaScript, aree cliccabili da 44 px,
 `prefers-reduced-motion` rispettato. L'intro è un dialogo con testo alternativo per gli
 screen reader e il resto della pagina è `inert` mentre è attivo. Se GSAP o il motore
 della pioggia non si caricano, l'intro viene saltata e la pagina resta completa.
+
+**Caratteri.** Titoli, logo e wordmark dell'intro: Martian Mono Bold; testo: IBM Plex Sans; etichette e dettagli: Martian Mono. Tutti OFL, ospitati nel sito. Il wordmark dell'intro usa lo stesso font del logo (costante `WORD_FONT` in `intro.js`). I caratteri originali del film non sono usati: il disegno del loro codice e del titolo è di terzi.
